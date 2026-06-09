@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 
@@ -12,10 +13,14 @@ export function repoPath(...segments: string[]): string {
 }
 
 export function defaultFixturePaths(): { profilePath: string; tracePath: string; evalPath: string } {
+  const profilePath = repoPath('profiles', 'inference-review-profile.json');
+  const tracePath = repoPath('inference', '1780936769209', 'a00-0.json');
+  const evalPath = repoPath('inference', '1780936769209', 'a00-0.eval.json');
+
   return {
-    profilePath: repoPath('profiles', 'inference-review-profile.json'),
-    tracePath: repoPath('inference', '1780936769209', 'a00-0.json'),
-    evalPath: repoPath('inference', '1780936769209', 'a00-0.eval.json')
+    profilePath,
+    tracePath: existsSync(tracePath) ? tracePath : '',
+    evalPath: existsSync(evalPath) ? evalPath : ''
   };
 }
 

@@ -1231,6 +1231,15 @@ export function App() {
 
   async function load(nextPaths = paths) {
     setError('');
+    if (!nextPaths.profilePath || !nextPaths.tracePath) {
+      setProject(undefined);
+      setSelectedNode(undefined);
+      setHits([]);
+      setRun(undefined);
+      setActive(undefined);
+      setError('Choose a review profile and trace artifact to load a project. Local inference artifacts are not bundled with the public repo.');
+      return;
+    }
     const loaded = await window.verity.loadProject({
       profilePath: nextPaths.profilePath,
       tracePath: nextPaths.tracePath,
@@ -1294,7 +1303,11 @@ export function App() {
       .getDefaultPaths()
       .then(async (defaults) => {
         setPaths(defaults);
-        await load(defaults);
+        if (defaults.tracePath) {
+          await load(defaults);
+        } else {
+          setError('Add local inference artifacts under inference/ or choose a trace artifact path to begin.');
+        }
       })
       .catch((cause: unknown) => setError(cause instanceof Error ? cause.message : String(cause)));
   }, []);
@@ -1316,7 +1329,7 @@ export function App() {
           </div>
           <div className="summary-item">
             <span className="k">Records</span>
-            <span className="v">{project ? `${project.traceNodes.length} trace records` : 'Loading…'}</span>
+            <span className="v">{project ? `${project.traceNodes.length} trace records` : 'No artifact loaded'}</span>
           </div>
           <div className="summary-item">
             <span className="k">Eval</span>
