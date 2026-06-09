@@ -1,0 +1,12 @@
+node_modules/
+out/
+dist/
+test-results/
+playwright-report/
+*.log
+.DS_Store
+
+# Local evaluation artifacts and generated reviewed outputs.
+inference/
+goals/
+*.reviewed.json

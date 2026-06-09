@@ -1,0 +1,33 @@
+{
+  "name": "verity-trace-review",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop app for inspecting, comparing, annotating, and patching agent trace review artifacts.",
+  "main": "out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "dogfood": "tsx scripts/dogfood.ts"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "preact": "^10.26.9",
+    "sql.js": "^1.13.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@preact/preset-vite": "^2.10.2",
+    "@types/node": "^22.15.29",
+    "@types/sql.js": "^1.4.11",
+    "electron": "^35.2.1",
+    "electron-vite": "^3.1.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  }
+}

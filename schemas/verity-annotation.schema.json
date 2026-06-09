@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verity.local/schemas/verity-annotation.schema.json",
+  "title": "Verity Annotation",
+  "type": "object",
+  "required": ["id", "target", "label", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string" },
+    "target": {
+      "type": "object",
+      "required": ["artifactRole", "jsonPointer", "contentHash"],
+      "properties": {
+        "artifactRole": { "enum": ["trace", "groundTruth", "eval"] },
+        "jsonPointer": { "type": "string" },
+        "stableId": { "type": "string" },
+        "timeRange": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "contentHash": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "label": { "type": "string", "minLength": 1 },
+    "body": { "type": "string" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" }
+  },
+  "additionalProperties": false
+}

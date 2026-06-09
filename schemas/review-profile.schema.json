@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verity.local/schemas/review-profile.schema.json",
+  "title": "Verity Review Profile",
+  "type": "object",
+  "required": ["id", "version", "name", "artifactSchemas", "mappings", "annotation"],
+  "properties": {
+    "id": { "type": "string" },
+    "version": { "type": "string" },
+    "name": { "type": "string" },
+    "artifactSchemas": {
+      "type": "object",
+      "required": ["trace"],
+      "properties": {
+        "trace": { "type": "object" },
+        "eval": { "type": "object" },
+        "groundTruth": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "mappings": {
+      "type": "object",
+      "required": ["trace", "groundTruth", "eval", "search"],
+      "properties": {
+        "trace": {
+          "type": "object",
+          "required": ["recordsPath", "kindPath", "labelPath"],
+          "properties": {
+            "recordsPath": { "type": "string" },
+            "idPath": { "type": "string" },
+            "kindPath": { "type": "string" },
+            "labelPath": { "type": "string" },
+            "startPath": { "type": "string" },
+            "endPath": { "type": "string" },
+            "durationPath": { "type": "string" },
+            "statusPath": { "type": "string" },
+            "detailPaths": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["label", "path"],
+                "properties": {
+                  "label": { "type": "string" },
+                  "path": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "groundTruth": {
+          "type": "object",
+          "required": ["pairs"],
+          "properties": {
+            "pairs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["label", "groundTruthPath", "inferencePath"],
+                "properties": {
+                  "label": { "type": "string" },
+                  "groundTruthPath": { "type": "string" },
+                  "inferencePath": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "eval": {
+          "type": "object",
+          "required": ["metricsPath", "statusPath", "sourcePath"],
+          "properties": {
+            "metricsPath": { "type": "string" },
+            "statusPath": { "type": "string" },
+            "sourcePath": { "type": "string" },
+            "factGroups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["label", "path"],
+                "properties": {
+                  "label": { "type": "string" },
+                  "path": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "search": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["role", "path"],
+            "properties": {
+              "role": { "enum": ["trace", "groundTruth", "eval"] },
+              "path": { "type": "string" },
+              "label": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotation": {
+      "type": "object",
+      "required": ["strategy", "patchPath"],
+      "properties": {
+        "strategy": { "enum": ["native-field", "extension-field", "schema-overlay", "sidecar"] },
+        "patchPath": { "type": "string" },
+        "extensionKey": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

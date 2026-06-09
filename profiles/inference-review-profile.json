@@ -1,0 +1,85 @@
+{
+  "id": "verity.inference-review.v1",
+  "version": "1.0.0",
+  "name": "Verity Inference Review Profile",
+  "artifactSchemas": {
+    "trace": {
+      "type": "object",
+      "required": ["ground_truth", "inference"],
+      "properties": {
+        "ground_truth": { "type": "object" },
+        "inference": { "type": "object" },
+        "_verity": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "eval": {
+      "type": "object",
+      "required": ["metrics", "status"],
+      "properties": {
+        "metrics": { "type": "object" },
+        "paths": { "type": "object" },
+        "source_blob": { "type": "string" },
+        "source_status": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "mappings": {
+    "trace": {
+      "recordsPath": "/inference/transcript",
+      "idPath": "/type",
+      "kindPath": "/type",
+      "labelPath": "/tool",
+      "startPath": "/started_at",
+      "endPath": "/finished_at",
+      "durationPath": "/elapsed_ms",
+      "statusPath": "/success",
+      "detailPaths": [
+        { "label": "Content", "path": "/content" },
+        { "label": "Input", "path": "/input" },
+        { "label": "Result", "path": "/result" }
+      ]
+    },
+    "groundTruth": {
+      "pairs": [
+        {
+          "label": "Question",
+          "groundTruthPath": "/ground_truth/output/question",
+          "inferencePath": "/inference/output/question"
+        },
+        {
+          "label": "Answer",
+          "groundTruthPath": "/ground_truth/output/answer",
+          "inferencePath": "/inference/output/answer"
+        },
+        {
+          "label": "Evidence",
+          "groundTruthPath": "/ground_truth/output/evidence",
+          "inferencePath": "/inference/output/evidence"
+        }
+      ]
+    },
+    "eval": {
+      "metricsPath": "/metrics",
+      "statusPath": "/status",
+      "sourcePath": "/source_blob",
+      "factGroups": [
+        { "label": "Ground truth facts", "path": "/metrics/generation_accuracy/ground_truth_facts" },
+        { "label": "Inference facts", "path": "/metrics/generation_accuracy/inference_facts" }
+      ]
+    },
+    "search": [
+      { "role": "trace", "label": "Transcript", "path": "/inference/transcript/*" },
+      { "role": "groundTruth", "label": "Ground truth output", "path": "/ground_truth/output" },
+      { "role": "groundTruth", "label": "Inference output", "path": "/inference/output" },
+      { "role": "eval", "label": "Evaluation metrics", "path": "/metrics" }
+    ]
+  },
+  "annotation": {
+    "strategy": "schema-overlay",
+    "patchPath": "/_verity/annotations",
+    "extensionKey": "_verity"
+  }
+}
